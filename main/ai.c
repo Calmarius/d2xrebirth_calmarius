@@ -1742,6 +1742,11 @@ int ai_restore_state(PHYSFS_file *fp, int version, int swap)
 	Boss_cloak_end_time = (fix64)tmptime32;
 	tmptime32 = PHYSFSX_readSXE32(fp, swap);
 	Last_teleport_time = (fix64)tmptime32;
+	if (Last_teleport_time > GameTime64)
+	{
+		// HACK! Fix up last teleport time to avoid non-teleporting bosses.
+		Last_teleport_time = GameTime64;
+	}
 	Boss_teleport_interval = PHYSFSX_readSXE32(fp, swap);
 	Boss_cloak_interval = PHYSFSX_readSXE32(fp, swap);
 	Boss_cloak_duration = PHYSFSX_readSXE32(fp, swap);

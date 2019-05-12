@@ -34,6 +34,8 @@
 extern "C" {
 #endif
 
+#define __EXPORT__
+
 /**
  * Open a platform-independent filename for reading, and make it accessible
  *  via an SDL_RWops structure. The file will be closed in PhysicsFS when the

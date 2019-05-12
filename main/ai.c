@@ -1752,6 +1752,11 @@ int ai_restore_state(PHYSFS_file *fp, int version, int swap)
 	Boss_cloak_duration = PHYSFSX_readSXE32(fp, swap);
 	tmptime32 = PHYSFSX_readSXE32(fp, swap);
 	Last_gate_time = (fix64)tmptime32;
+	if (Last_gate_time > GameTime64)
+	{
+		// HACK! Fix up last gate time to avoid bosses that doesn't spew bots!
+		Last_gate_time = GameTime64;
+	}
 	Gate_interval = PHYSFSX_readSXE32(fp, swap);
 	tmptime32 = PHYSFSX_readSXE32(fp, swap);
 	Boss_dying_start_time = (fix64)tmptime32;

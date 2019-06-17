@@ -1744,7 +1744,7 @@ int newdemo_read_frame_information(int rewrite)
 		if (nd_playback_v_bad_read) { done = -1; break; }
 		if (rewrite && (c != ND_EVENT_EOF))
 			nd_write_byte(c);
-
+		
 		switch( c ) {
 
 		case ND_EVENT_START_FRAME: {        // Followed by an integer frame number, then a fix FrameTime
@@ -1972,6 +1972,14 @@ int newdemo_read_frame_information(int rewrite)
 			break;
 		}
 
+		case ND_EVENT_SECRET_THINGY:
+		{
+			/* This does nothing. */
+			int truth;
+			nd_read_int(&truth);
+		}
+		break;
+
 		case ND_EVENT_TRIGGER:
 			nd_read_int(&segnum);
 			nd_read_int(&side);
@@ -1988,7 +1996,7 @@ int newdemo_read_frame_information(int rewrite)
 			if (Newdemo_vcr_state != ND_STATE_PAUSED)
 			{
 				if (Triggers[Walls[Segments[segnum].sides[side].wall_num].trigger].type == TT_SECRET_EXIT) {
-					int truth;
+					/*int truth;
 
 					nd_read_byte(&c);
 					Assert(c == ND_EVENT_SECRET_THINGY);
@@ -2000,7 +2008,7 @@ int newdemo_read_frame_information(int rewrite)
 						break;
 					}
 					if (!truth)
-						check_trigger(&Segments[segnum], side, objnum,shot);
+						check_trigger(&Segments[segnum], side, objnum,shot);*/
 				} else if (!rewrite)
 					check_trigger(&Segments[segnum], side, objnum,shot);
 			}

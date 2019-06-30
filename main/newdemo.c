@@ -2271,6 +2271,7 @@ int newdemo_read_frame_information(int rewrite)
 				else
 					Secondary_weapon = (int)old_weapon;
 			}
+			Secondary_last_was_super[Secondary_weapon % SUPER_WEAPON] = (Secondary_weapon >= SUPER_WEAPON);
 			break;
 		}
 

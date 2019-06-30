@@ -315,6 +315,18 @@ void do_weapon_n_item_stuff()
 			{
 				Secondary_last_was_super[PROXIMITY_INDEX]=!Secondary_last_was_super[PROXIMITY_INDEX];
 				digi_play_sample_once( SOUND_GOOD_SELECTION_SECONDARY, F1_0 );
+				// Record this event to show bomb count during playback.
+				if (Newdemo_state==ND_STATE_RECORDING )
+				{
+					int bombIndex = PROXIMITY_INDEX + (Secondary_last_was_super[PROXIMITY_INDEX]? SUPER_WEAPON: 0);
+					// change weapon
+					newdemo_record_player_weapon(1, bombIndex);
+					// record count
+					newdemo_record_secondary_ammo(Players[Player_num].secondary_ammo[bombIndex]);
+					// change weapon back
+					newdemo_record_player_weapon(1, Secondary_weapon);					
+				}
+
 			}
 		}
 		Controls.toggle_bomb_count = 0;

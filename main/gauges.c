@@ -2661,8 +2661,8 @@ void draw_hud()
 {
 	if (Newdemo_state == ND_STATE_RECORDING)
 	{
-		if (Primary_weapon == VULCAN_INDEX)
-			newdemo_record_primary_ammo(Players[Player_num].primary_ammo[Primary_weapon]);
+		if (Primary_weapon == VULCAN_INDEX || Primary_weapon == GAUSS_INDEX)
+			newdemo_record_primary_ammo(Players[Player_num].primary_ammo[VULCAN_INDEX]);
 		if (Primary_weapon == OMEGA_INDEX)
 			newdemo_record_primary_ammo(Omega_charge);
 		newdemo_record_secondary_ammo(Players[Player_num].secondary_ammo[Secondary_weapon]);

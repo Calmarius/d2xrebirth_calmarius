@@ -2595,7 +2595,10 @@ int newdemo_read_frame_information(int rewrite)
 			if ((Newdemo_vcr_state == ND_STATE_REWINDING) || (Newdemo_vcr_state == ND_STATE_ONEFRAMEBACKWARD))
 				Players[Player_num].score -= score;
 			else if ((Newdemo_vcr_state == ND_STATE_PLAYBACK) || (Newdemo_vcr_state == ND_STATE_FASTFORWARD) || (Newdemo_vcr_state == ND_STATE_ONEFRAMEFORWARD))
-				Players[Player_num].score += score;
+			{
+				//Players[Player_num].score += score;
+				add_points_to_score(score);
+			}
 			break;
 		}
 

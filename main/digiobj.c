@@ -337,7 +337,9 @@ int digi_link_sound_to_object3( int org_soundnum, short objnum, int forever, fix
 		return -1;
 	}
 	if ((objnum<0)||(objnum>Highest_object_index))
+	{
 		return -1;
+	}
 
 	if ( !forever ) { 		// && GameSounds[soundnum - SOUND_OFFSET].length < SOUND_3D_THRESHHOLD)	{
 		// Hack to keep sounds from building up...
@@ -349,6 +351,26 @@ int digi_link_sound_to_object3( int org_soundnum, short objnum, int forever, fix
 	if ( Newdemo_state == ND_STATE_RECORDING )		{
 		newdemo_record_link_sound_to_object3( org_soundnum, objnum, max_volume, max_distance, loop_start, loop_end );
 	}
+
+	/* Bosses shouldn't have more than one persistent sound during playback.*/
+	if (forever && (Newdemo_state == ND_STATE_PLAYBACK))
+	{
+		object *obj = &Objects[objnum];
+		if (obj->type == OBJ_ROBOT && Robot_info[obj->id].boss_flag)
+		{
+			const int flag = SOF_USED | SOF_LINK_TO_OBJ;
+			for (i=0; i<MAX_SOUND_OBJECTS; i++ )
+			{
+				sound_object *so = &SoundObjects[i];
+				if (((so->flags & flag) == flag)
+				&& (so->link_type.obj.objsignature == obj->signature))
+				{
+					return -1;
+				}
+			}
+		}
+	}
+
 
 	for (i=0; i<MAX_SOUND_OBJECTS; i++ )
 		if (SoundObjects[i].flags==0)

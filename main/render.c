@@ -92,9 +92,7 @@ int	N_render_segs;
 
 fix Render_zoom = 0x9000;					//the player's zoom factor
 
-#ifndef NDEBUG
 ubyte object_rendered[MAX_OBJECTS];
-#endif
 
 #ifdef EDITOR
 int	Render_only_bottom=0;
@@ -644,9 +642,8 @@ void do_render_object(int objnum, int window_num)
 		Int3();		//get Matt!!!
 		return;
 	}
-
-	object_rendered[objnum] = 1;
 	#endif
+	object_rendered[objnum] = 1;
 
    if (Newdemo_state==ND_STATE_PLAYBACK)  
 	 {
@@ -1967,18 +1964,14 @@ done_list:
 //renders onto current canvas
 void render_mine(int start_seg_num,fix eye_offset, int window_num)
 {
-#ifndef NDEBUG
 	int		i;
-#endif
 	int		nn;
 
 	//	Initialize number of objects (actually, robots!) rendered this frame.
 	Window_rendered_data[window_num].num_objects = 0;
 
-	#ifndef NDEBUG
 	for (i=0;i<=Highest_object_index;i++)
 		object_rendered[i] = 0;
-	#endif
 
 	//set up for rendering
 
@@ -2294,6 +2287,25 @@ done_rendering:
 	;
 
 #endif
+
+	// Hack: consider boss rendered for demo recording purposes (at least hear its sound).
+	if (Newdemo_state == ND_STATE_RECORDING)
+	{
+		for (i=0;i<=Highest_object_index;i++)
+		{
+			object *obj = &Objects[i];
+			if (object_rendered[i]) continue; // Skip if already rendered.
+			if (obj->type == OBJ_ROBOT)
+			{
+				if (Robot_info[obj->id].boss_flag)
+				{
+					// Send rendering event to keep track of it.
+					newdemo_record_render_object(obj);
+				}
+			}
+		}
+	}
+
 
 }
 #ifdef EDITOR

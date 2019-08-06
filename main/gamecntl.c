@@ -318,15 +318,8 @@ void do_weapon_n_item_stuff()
 				// Record this event to show bomb count during playback.
 				if (Newdemo_state==ND_STATE_RECORDING )
 				{
-					int bombIndex = PROXIMITY_INDEX + (Secondary_last_was_super[PROXIMITY_INDEX]? SUPER_WEAPON: 0);
-					// change weapon
-					newdemo_record_player_weapon(1, bombIndex);
-					// record count
-					newdemo_record_secondary_ammo(Players[Player_num].secondary_ammo[bombIndex]);
-					// change weapon back
-					newdemo_record_player_weapon(1, Secondary_weapon);					
+					newdemo_record_bomb_count();
 				}
-
 			}
 		}
 		Controls.toggle_bomb_count = 0;
@@ -1561,7 +1554,10 @@ int FinalCheats(int key)
 		}
 
 		if (Newdemo_state == ND_STATE_RECORDING)
+		{
 			newdemo_record_laser_level(Players[Player_num].laser_level, MAX_LASER_LEVEL);
+			newdemo_record_bomb_count();
+		}
 
 		Players[Player_num].energy = MAX_ENERGY;
 		Players[Player_num].laser_level = MAX_SUPER_LASER_LEVEL;

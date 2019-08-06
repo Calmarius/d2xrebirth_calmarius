@@ -1402,9 +1402,9 @@ void newdemo_record_primary_ammo(int new_ammo)
 	start_time();
 }
 
-void newdemo_record_secondary_ammo(int new_ammo)
+void newdemo_record_secondary_ammo(int new_ammo, int force)
 {
-	if (nd_record_v_secondary_ammo == new_ammo)
+	if (nd_record_v_secondary_ammo == new_ammo && !force)
 		return;
 	stop_time();
 	nd_write_byte(ND_EVENT_SECONDARY_AMMO);
@@ -1415,6 +1415,21 @@ void newdemo_record_secondary_ammo(int new_ammo)
 	nd_write_short((short)new_ammo);
 	nd_record_v_secondary_ammo = new_ammo;
 	start_time();
+}
+
+void newdemo_record_bomb_count()
+{
+	int bombIndex = which_bomb();
+	int secondaryWeaponSave = Secondary_weapon;
+	// change weapon to bomb and force recording count.
+	newdemo_record_player_weapon(1, bombIndex);
+	Secondary_weapon = bombIndex;
+	newdemo_record_secondary_ammo(Players[Player_num].secondary_ammo[Secondary_weapon], 1);
+
+	// change weapon back
+	newdemo_record_player_weapon(1, secondaryWeaponSave);					
+	Secondary_weapon = secondaryWeaponSave;
+	newdemo_record_secondary_ammo(Players[Player_num].secondary_ammo[Secondary_weapon], 0);
 }
 
 void newdemo_record_door_opening(int segnum, int side)

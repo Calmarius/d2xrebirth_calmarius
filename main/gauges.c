@@ -2665,7 +2665,7 @@ void draw_hud()
 			newdemo_record_primary_ammo(Players[Player_num].primary_ammo[VULCAN_INDEX]);
 		if (Primary_weapon == OMEGA_INDEX)
 			newdemo_record_primary_ammo(Omega_charge);
-		newdemo_record_secondary_ammo(Players[Player_num].secondary_ammo[Secondary_weapon]);
+		newdemo_record_secondary_ammo(Players[Player_num].secondary_ammo[Secondary_weapon], 0);
 	}
 	if (PlayerCfg.HudMode==3) // no hud, "immersion mode"
 		return;

@@ -2067,6 +2067,14 @@ void do_missile_firing(int drop_bomb)
 			phys_apply_rot(ConsoleObject, &force_vec);
 		}
 
+		if (weapon == PROXIMITY_INDEX || weapon == SMART_MINE_INDEX)
+		{
+			if (Newdemo_state==ND_STATE_RECORDING )
+			{
+				newdemo_record_bomb_count();
+			}
+		}
+
 #ifdef NETWORK
 		if (Game_mode & GM_MULTI)
 			multi_send_fire(weapon+MISSILE_ADJUST, 0, gun_flag, 1, Network_laser_track);

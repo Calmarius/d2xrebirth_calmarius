@@ -586,6 +586,11 @@ int pick_up_secondary(int weapon_index,int count)
 
 				if (SOrderList (weapon_index) < SOrderList(cur))
 					Secondary_last_was_super[PROXIMITY_INDEX] = (weapon_index == SMART_MINE_INDEX);
+
+				if (Newdemo_state==ND_STATE_RECORDING )
+				{
+					newdemo_record_bomb_count();
+				}
 			}
 		}
 	}
